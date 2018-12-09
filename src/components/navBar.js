@@ -1,7 +1,15 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
+import { getUser, isLoggedIn, logout } from "../services/auth"
 
 export default () => (
+    const content = { message:"", login: true}
+    if (isLoggedIn()) {
+        content.message = `Hello. ${getUser().name}`
+    } else {
+        content.message = "You are not logged in"
+    }
+    return (
     <div 
     style={{
         display: "flex",
@@ -10,15 +18,25 @@ export default () => (
         borderBottom: "1px solid #d1c11e0"
     }}
  >
-  <span>You are not logged in</span> 
+  <span>{content.message}</span> 
 
   <nav>
       <Link to ="/">Home</Link>
       { ` ` }
-      <Link to ="/">Profile</Link>
-      { ` ` }
-      <Link to ="/">Logout</Link>
-      
+      <Link to ="/app/profile">Profile</Link>
+      { ` `}
+      {isLoggedIn() ? (
+          <a
+            href="/"
+            onClick={event => {
+              event.preventDefault()
+              logout(() => navigate(`/app/login`))
+            }}
+          >
+            Logout
+          </a>
+        ) : null}
   </nav>
 </div>
 )
+}
