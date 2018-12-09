@@ -38,6 +38,7 @@ const Layout = ({ children }) => (
             paddingTop: 0,
           }}
         >
+          <NavBar />
           {children}
         </div>
       </>
